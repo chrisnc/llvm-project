@@ -3,6 +3,8 @@
 ; RUN: llc < %s -mtriple=powerpc-unknown-linux-gnu -frame-pointer=all | FileCheck %s -check-prefix=PPC32-LINUX
 ; RUN: llc < %s -mtriple=powerpc64-unknown-linux-gnu  -mcpu=ppc -frame-pointer=all | FileCheck %s -check-prefix=PPC64-LINUX
 
+; RUN: llc < %s -mtriple=powerpc-none-eabi | FileCheck %s -check-prefix=PPC32-EABI
+
 ; RUN: llc < %s -mcpu=pwr4 -mattr=-altivec -verify-machineinstrs \
 ; RUN: -mtriple=powerpc-ibm-aix-xcoff | FileCheck %s -check-prefix=PPC32-AIX
 
@@ -38,6 +40,23 @@ define ptr @f1(i32 %n) nounwind {
 ; PPC32-LINUX-NEXT: mr 1, 31
 ; PPC32-LINUX-NEXT: mr 31, 0
 ; PPC32-LINUX-NEXT: blr
+
+; PPC32-EABI-LABEL: f1
+; PPC32-EABI:      stwu 1, -16(1)
+; PPC32-EABI-NEXT: slwi 3, 3, 2
+; PPC32-EABI-NEXT: addi 3, 3, 7
+; PPC32-EABI-NEXT: stw 31, 12(1)
+; PPC32-EABI-NEXT: mr 31, 1
+; PPC32-EABI-NEXT: rlwinm 3, 3, 0, 0, 28
+; PPC32-EABI-NEXT: neg 3, 3
+; PPC32-EABI-NEXT: addi 4, 31, 16
+; PPC32-EABI-NEXT: stwux 4, 1, 3
+; PPC32-EABI-NEXT: lwz 31, 0(1)
+; PPC32-EABI-NEXT: addi 3, 1, 8
+; PPC32-EABI-NEXT: lwz 0, -4(31)
+; PPC32-EABI-NEXT: mr 1, 31
+; PPC32-EABI-NEXT: mr 31, 0
+; PPC32-EABI-NEXT: blr
 
 ; PPC64-LINUX-LABEL: f1
 ; PPC64-LINUX:      std 31, -8(1)
