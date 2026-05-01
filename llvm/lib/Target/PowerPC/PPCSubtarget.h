@@ -184,6 +184,8 @@ public:
 #include "PPCGenSubtargetInfo.inc"
 
   Align getPlatformStackAlignment() const {
+    if (isEABI())
+      return Align(8);
     return Align(16);
   }
 
@@ -219,6 +221,9 @@ public:
 
   bool is64BitELFABI() const { return isSVR4ABI() && isPPC64(); }
   bool is32BitELFABI() const { return isSVR4ABI() && !isPPC64(); }
+  bool isEABI() const {
+    return getTargetTriple().getEnvironment() == llvm::Triple::EABI;
+  }
   bool isUsingPCRelativeCalls() const;
 
   /// Originally, this function return hasISEL(). Now we always enable it,
