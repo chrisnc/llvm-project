@@ -85,6 +85,8 @@ class VectorType;
   //  ARMTargetLowering - ARM Implementation of the TargetLowering interface
 
   class ARMTargetLowering : public TargetLowering {
+    friend class ARMBaseTargetMachine; // For getEffectiveCallingConv().
+
     // Copying needed for an outgoing byval argument.
     enum ByValCopyKind {
       // Argument is already in the correct location, no copy needed.

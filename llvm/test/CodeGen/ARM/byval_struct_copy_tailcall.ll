@@ -1,4 +1,4 @@
-; RUN: llc -mtriple thumbv7em-apple-darwin -o - < %s | FileCheck %s
+; RUN: llc -mtriple thumbv7em-apple-darwin -float-abi=soft -o - < %s | FileCheck %s
 
 %"struct.s1" = type { [19 x i32] }
 
