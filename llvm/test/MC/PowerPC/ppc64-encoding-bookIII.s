@@ -170,6 +170,14 @@
 # CHECK-LE: tlbie 4                         # encoding: [0x64,0x22,0x00,0x7c]
             tlbie %r4
 
+# CHECK-BE: tlbie 4                         # encoding: [0x7c,0x00,0x22,0x64]
+# CHECK-LE: tlbie 4                         # encoding: [0x64,0x22,0x00,0x7c]
+            tlbie 4, 0, 0, 0, 0
+
+# CHECK-BE: tlbie 4, 5                      # encoding: [0x7c,0xa0,0x22,0x64]
+# CHECK-LE: tlbie 4, 5                      # encoding: [0x64,0x22,0xa0,0x7c]
+            tlbie 4, 5, 0, 0, 0
+
 # CHECK-BE: tlbilx 1, 4, 5                  # encoding: [0x7c,0x24,0x28,0x24]
 # CHECK-LE: tlbilx 1, 4, 5                  # encoding: [0x24,0x28,0x24,0x7c]
             tlbilx 1, %r4, %r5
